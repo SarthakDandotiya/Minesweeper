@@ -6,26 +6,23 @@ class Board extends Component {
     constructor(props) {
         super(props);
 
-        // this.setState({
-        //     board: this.createBoard()
-        // })
         this.state = {
-            board: this.createBoard()
+            board: this.createBoard(),
+            flags: 0,
+            correct: 0
         }
     }
 
-
-    // TODO: Optimize Code
-
     createBoard = () => {
-        // initializing the board - 2D array 
+        // initializing the board - 2D array of objects
         let board = [];
         for (let i = 0; i < 9; i++) {
             board[i] = [];
             for (let j = 0; j < 9; j++) {
                 board[i][j] = {
                     value: 0,
-                    reveal: false
+                    reveal: false,
+                    flag: false,
                 }
             }
         }
@@ -92,6 +89,34 @@ class Board extends Component {
         return Math.floor((Math.random() * 1000) + 1) % 8;
     }
 
+    incrementFlags = (i, j) => {
+        let flags = this.state.flags;
+        let board = this.state.board;
+
+        if (flags < 10)
+            flags++;
+        board[i][j].flag = true;
+
+        this.setState({
+            board: board,
+            flags: flags
+        })
+    }
+
+    deccrementFlags = (i, j) => {
+        let flags = this.state.flags;
+        let board = this.state.board;
+
+        if (flags > 0)
+            flags--;
+        board[i][j].flag = false;
+
+        this.setState({
+            board: board,
+            flags: flags
+        })
+    }
+
     revealAll = () => {
         let board = this.state.board
         board.forEach(row => {
@@ -110,6 +135,7 @@ class Board extends Component {
         // recursively updates all 0's surrounding to -1
 
         let board = this.state.board;
+        let flags = this.state.flags;
 
         if (board[i][j].value <= 0) {
             const tL = ((i - 1) >= 0) && ((j - 1) >= 0) && ((i - 1) <= 8) && ((j - 1) <= 8)
@@ -125,41 +151,73 @@ class Board extends Component {
 
             if (tL && board[i - 1][j - 1].reveal === false) {
                 board[i - 1][j - 1].reveal = true;
+                if (board[i - 1][j - 1].flag === true) {
+                    flags--;
+                    this.setState({ flags: flags });
+                }
                 this.updateSurroundingNull(i - 1, j - 1)
             }
             if (tC && board[i - 1][j].reveal === false) {
                 board[i - 1][j].reveal = true;
+                if (board[i - 1][j].flag === true) {
+                    flags--;
+                    this.setState({ flags: flags });
+                }
                 this.updateSurroundingNull(i - 1, j)
             }
             if (tR && board[i - 1][j + 1].reveal === false) {
                 board[i - 1][j + 1].reveal = true;
+                if (board[i - 1][j + 1].flag === true) {
+                    flags--;
+                    this.setState({ flags: flags });
+                }
                 this.updateSurroundingNull(i - 1, j + 1)
             }
             if (L && board[i][j - 1].reveal === false) {
                 board[i][j - 1].reveal = true;
+                if (board[i][j - 1].flag === true) {
+                    flags--;
+                    this.setState({ flags: flags });
+                }
                 this.updateSurroundingNull(i, j - 1)
             }
             if (R && board[i][j + 1].reveal === false) {
                 board[i][j + 1].reveal = true;
+                if (board[i][j + 1].flag === true) {
+                    flags--;
+                    this.setState({ flags: flags });
+                }
                 this.updateSurroundingNull(i, j + 1)
             }
             if (bL && board[i + 1][j - 1].reveal === false) {
                 board[i + 1][j - 1].reveal = true;
+                if (board[i + 1][j - 1].flag === true) {
+                    flags--;
+                    this.setState({ flags: flags });
+                }
                 this.updateSurroundingNull(i + 1, j - 1)
             }
             if (bC && board[i + 1][j].reveal === false) {
                 board[i + 1][j].reveal = true;
+                if (board[i + 1][j].flag === true) {
+                    flags--;
+                    this.setState({ flags: flags });
+                }
                 this.updateSurroundingNull(i + 1, j)
             }
             if (bR && board[i + 1][j + 1].reveal === false) {
                 board[i + 1][j + 1].reveal = true;
+                if (board[i + 1][j + 1].flag === true) {
+                    flags--;
+                    this.setState({ flags: flags });
+                }
                 this.updateSurroundingNull(i + 1, j + 1)
             }
         }
 
 
         this.setState({
-            board: board
+            board: board,
         })
 
     }
@@ -174,6 +232,10 @@ class Board extends Component {
                         key={ i.toString() + j.toString() }
                         i={ i } j={ j }
                         usn={ this.updateSurroundingNull }
+                        iF={ this.incrementFlags }
+                        dF={ this.deccrementFlags }
+                        flagCount={ this.state.flags }
+                        flagable={ (this.state.flags >= 0 && this.state.flags <= 10) ? true : false }
                         reveal={ obj.reveal }
                         revealAll={ this.revealAll }
                     />
@@ -193,6 +255,8 @@ class Board extends Component {
         return (
             <div className="board">
                 { this.displayBoard(this.state.board) }
+                <br />
+                <p>Flags: { this.state.flags }</p>
             </div>
         );
     }

@@ -20,12 +20,22 @@ class Tile extends Component {
     }
 
     handleHold = () => {
-        if (this.state.clicked === false && this.props.reveal === false)
-            this.setState({ held: !this.state.held })
+        if (this.state.clicked === false && this.props.reveal === false) {
+            // this.setState({ held: !this.state.held })
+            if (this.state.held === true && this.props.flagCount > 0) {
+                this.setState({ held: false })
+                this.props.dF(this.props.i, this.props.j)
+            } else if (this.state.held === false && this.props.flagCount < 10) {
+                this.setState({ held: true })
+                this.props.iF(this.props.i, this.props.j)
+            }
+        }
     }
 
     displayFlag = () => {
-        return <img src={ flag } alt="flaged" className="flag" />
+        if (this.props.reveal === false) {
+            return <img src={ flag } alt="flaged" className="flag" />
+        }
     }
 
     displayData = (value, reveal) => {
