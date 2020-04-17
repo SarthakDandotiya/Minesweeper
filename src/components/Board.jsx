@@ -92,11 +92,18 @@ class Board extends Component {
         return Math.floor((Math.random() * 1000) + 1) % 8;
     }
 
-    // UNSAFE_componentWillMount() {
-    //     this.setState({
-    //         board: this.createBoard()
-    //     })
-    // }
+    revealAll = () => {
+        let board = this.state.board
+        board.forEach(row => {
+            row.forEach(obj => {
+                obj.reveal = true;
+            })
+        })
+
+        this.setState({
+            board: board
+        })
+    }
 
     updateSurroundingNull = (i, j) => {
 
@@ -162,7 +169,14 @@ class Board extends Component {
         return array.map((row, i) => {
             let tile = row.map((obj, j) => {
                 return (
-                    <Tile value={ obj.value } key={ i.toString() + j.toString() } i={ i } j={ j } usn={ this.updateSurroundingNull } reveal={ obj.reveal } />
+                    <Tile
+                        value={ obj.value }
+                        key={ i.toString() + j.toString() }
+                        i={ i } j={ j }
+                        usn={ this.updateSurroundingNull }
+                        reveal={ obj.reveal }
+                        revealAll={ this.revealAll }
+                    />
                 )
             })
 

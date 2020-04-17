@@ -15,10 +15,12 @@ class Tile extends Component {
             this.setState({ clicked: true })
         if (this.props.value === 0)
             this.props.usn(this.props.i, this.props.j);
+        if (this.state.held === false && this.props.reveal === false && this.props.value > 90)
+            this.props.revealAll()
     }
 
     handleHold = () => {
-        if (this.state.clicked === false)
+        if (this.state.clicked === false && this.props.reveal === false)
             this.setState({ held: !this.state.held })
     }
 
