@@ -126,7 +126,8 @@ class Board extends Component {
         })
 
         this.setState({
-            board: board
+            board: board,
+            flags: 0
         })
     }
 
