@@ -7,18 +7,18 @@ import flag from '../images/flag.png';
 class Tile extends Component {
     state = {
         held: false,
-        clicked: this.props.reveal
+        clicked: false
     }
 
     handleClick = () => {
-        if (!this.state.held)
+        if (this.state.held === false && this.props.reveal === false)
             this.setState({ clicked: true })
         if (this.props.value === 0)
             this.props.usn(this.props.i, this.props.j);
     }
 
     handleHold = () => {
-        if (!this.state.clicked)
+        if (this.state.clicked === false)
             this.setState({ held: !this.state.held })
     }
 
@@ -26,11 +26,11 @@ class Tile extends Component {
         return <img src={ flag } alt="flaged" className="flag" />
     }
 
-    displayData = (value) => {
+    displayData = (value, reveal) => {
         if (value >= 99) {
             return <img src={ mine } alt="mine" className="mine" />
         } else {
-            return <p className="value"> { value <= 0 ? null : value }</p>
+            return <p className={ "value c" + value.toString() }> { reveal ? (value === 0 ? null : value) : value }</p>
         }
     }
 
@@ -39,7 +39,7 @@ class Tile extends Component {
             <Holdable className="holdable" onClick={ this.handleClick } onHold={ this.handleHold }>
                 <div className={ this.state.clicked || this.props.reveal ? "tile_clicked" : "tile" }>
                     { this.state.held ? this.displayFlag() : null }
-                    { this.state.clicked ? this.displayData(this.props.value) : null }
+                    { this.state.clicked || this.props.reveal ? this.displayData(this.props.value, this.props.reveal) : null }
                 </div>
             </Holdable >
         );

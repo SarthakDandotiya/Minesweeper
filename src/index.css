@@ -74,3 +74,40 @@ body {
   position: absolute;
   border: none;
 }
+
+/* Numbers & their colors */
+.c0{
+  display: none;
+}
+
+.c1{
+  color: blue;
+}
+
+.c2{
+  color: green;
+}
+
+.c3{
+  color: red;
+}
+
+.c4 {
+  color: purple;
+}
+
+.c5 {
+  color: maroon;
+}
+
+.c6{
+  color: darkcyan;
+}
+
+.c7{
+  color: black;
+}
+
+.c8{
+  color: gray;
+}

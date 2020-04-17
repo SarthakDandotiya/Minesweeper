@@ -2,7 +2,20 @@ import React, { Component } from 'react';
 import Tile from './Tile';
 
 class Board extends Component {
-    state = {}
+
+    constructor(props) {
+        super(props);
+
+        // this.setState({
+        //     board: this.createBoard()
+        // })
+        this.state = {
+            board: this.createBoard()
+        }
+    }
+
+
+    // TODO: Optimize Code
 
     createBoard = () => {
         // initializing the board - 2D array 
@@ -10,7 +23,10 @@ class Board extends Component {
         for (let i = 0; i < 9; i++) {
             board[i] = [];
             for (let j = 0; j < 9; j++) {
-                board[i][j] = 0
+                board[i][j] = {
+                    value: 0,
+                    reveal: false
+                }
             }
         }
 
@@ -21,8 +37,8 @@ class Board extends Component {
             x = this.randomNumber8();
             y = this.randomNumber8();
 
-            if (board[x][y] < 99) {
-                board[x][y] = 99;
+            if (board[x][y].value < 99) {
+                board[x][y].value = 99;
                 minesPlanted++;
             }
         }
@@ -36,7 +52,7 @@ class Board extends Component {
                 // # # # => bL  bC  bR
 
                 // TODO: Remove Unneccesary Checks
-                if (board[i][j] > 90) {
+                if (board[i][j].value > 90) {
                     const tL = ((i - 1) >= 0) && ((j - 1) >= 0) && ((i - 1) <= 8) && ((j - 1) <= 8)
                     const tC = ((i - 1) >= 0) && ((j) >= 0) && ((i - 1) <= 8) && ((j) <= 8)
                     const tR = ((i - 1) >= 0) && ((j + 1) >= 0) && ((i - 1) <= 8) && ((j + 1) <= 8)
@@ -48,14 +64,22 @@ class Board extends Component {
                     const bC = ((i + 1) >= 0) && ((j) >= 0) && ((i + 1) <= 8) && ((j) <= 8)
                     const bR = ((i + 1) >= 0) && ((j + 1) >= 0) && ((i + 1) <= 8) && ((j + 1) <= 8)
 
-                    if (tL) board[i - 1][j - 1] += 1
-                    if (tC) board[i - 1][j] += 1
-                    if (tR) board[i - 1][j + 1] += 1
-                    if (L) board[i][j - 1] += 1
-                    if (R) board[i][j + 1] += 1
-                    if (bL) board[i + 1][j - 1] += 1
-                    if (bC) board[i + 1][j] += 1
-                    if (bR) board[i + 1][j + 1] += 1
+                    if (tL)
+                        board[i - 1][j - 1].value += 1
+                    if (tC)
+                        board[i - 1][j].value += 1
+                    if (tR)
+                        board[i - 1][j + 1].value += 1
+                    if (L)
+                        board[i][j - 1].value += 1
+                    if (R)
+                        board[i][j + 1].value += 1
+                    if (bL)
+                        board[i + 1][j - 1].value += 1
+                    if (bC)
+                        board[i + 1][j].value += 1
+                    if (bR)
+                        board[i + 1][j + 1].value += 1
                 }
             }
         }
@@ -68,11 +92,11 @@ class Board extends Component {
         return Math.floor((Math.random() * 1000) + 1) % 8;
     }
 
-    UNSAFE_componentWillMount() {
-        this.setState({
-            board: this.createBoard()
-        })
-    }
+    // UNSAFE_componentWillMount() {
+    //     this.setState({
+    //         board: this.createBoard()
+    //     })
+    // }
 
     updateSurroundingNull = (i, j) => {
 
@@ -80,7 +104,7 @@ class Board extends Component {
 
         let board = this.state.board;
 
-        if (board[i][j] <= 0) {
+        if (board[i][j].value <= 0) {
             const tL = ((i - 1) >= 0) && ((j - 1) >= 0) && ((i - 1) <= 8) && ((j - 1) <= 8)
             const tC = ((i - 1) >= 0) && ((j) >= 0) && ((i - 1) <= 8) && ((j) <= 8)
             const tR = ((i - 1) >= 0) && ((j + 1) >= 0) && ((i - 1) <= 8) && ((j + 1) <= 8)
@@ -92,36 +116,36 @@ class Board extends Component {
             const bC = ((i + 1) >= 0) && ((j) >= 0) && ((i + 1) <= 8) && ((j) <= 8)
             const bR = ((i + 1) >= 0) && ((j + 1) >= 0) && ((i + 1) <= 8) && ((j + 1) <= 8)
 
-            if (tL && board[i - 1][j - 1] === 0) {
-                board[i - 1][j - 1] = -1;
+            if (tL && board[i - 1][j - 1].reveal === false) {
+                board[i - 1][j - 1].reveal = true;
                 this.updateSurroundingNull(i - 1, j - 1)
             }
-            if (tC && board[i - 1][j] === 0) {
-                board[i - 1][j] = -1;
+            if (tC && board[i - 1][j].reveal === false) {
+                board[i - 1][j].reveal = true;
                 this.updateSurroundingNull(i - 1, j)
             }
-            if (tR && board[i - 1][j + 1] === 0) {
-                board[i - 1][j + 1] = -1;
+            if (tR && board[i - 1][j + 1].reveal === false) {
+                board[i - 1][j + 1].reveal = true;
                 this.updateSurroundingNull(i - 1, j + 1)
             }
-            if (L && board[i][j - 1] === 0) {
-                board[i][j - 1] = -1;
+            if (L && board[i][j - 1].reveal === false) {
+                board[i][j - 1].reveal = true;
                 this.updateSurroundingNull(i, j - 1)
             }
-            if (R && board[i][j + 1] === 0) {
-                board[i][j + 1] = -1;
+            if (R && board[i][j + 1].reveal === false) {
+                board[i][j + 1].reveal = true;
                 this.updateSurroundingNull(i, j + 1)
             }
-            if (bL && board[i + 1][j - 1] === 0) {
-                board[i + 1][j - 1] = -1;
+            if (bL && board[i + 1][j - 1].reveal === false) {
+                board[i + 1][j - 1].reveal = true;
                 this.updateSurroundingNull(i + 1, j - 1)
             }
-            if (bC && board[i + 1][j] === 0) {
-                board[i + 1][j] = -1;
+            if (bC && board[i + 1][j].reveal === false) {
+                board[i + 1][j].reveal = true;
                 this.updateSurroundingNull(i + 1, j)
             }
-            if (bR && board[i + 1][j + 1] === 0) {
-                board[i + 1][j + 1] = -1;
+            if (bR && board[i + 1][j + 1].reveal === false) {
+                board[i + 1][j + 1].reveal = true;
                 this.updateSurroundingNull(i + 1, j + 1)
             }
         }
@@ -136,9 +160,9 @@ class Board extends Component {
     displayBoard = (array) => {
 
         return array.map((row, i) => {
-            let tile = row.map((value, j) => {
+            let tile = row.map((obj, j) => {
                 return (
-                    <Tile value={ value } key={ i.toString() + j.toString() } i={ i } j={ j } usn={ this.updateSurroundingNull } reveal={ value < 0 ? true : false } />
+                    <Tile value={ obj.value } key={ i.toString() + j.toString() } i={ i } j={ j } usn={ this.updateSurroundingNull } reveal={ obj.reveal } />
                 )
             })
 
