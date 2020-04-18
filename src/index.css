@@ -3,17 +3,25 @@
   /* RESETS */
   margin: 0;
   padding: 0;
+  /* box-sizing: border-box; */
 }
 
 body {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   justify-content: center;
   align-items: center;
+  /* width: 100%; */
+}
+
+h2{
+  margin: 16px 0px;
 }
 
 .board {
   user-select: none;
+  /* width: 100%; */
+  /* margin: 0% 5%; */
 }
 
 .row {
@@ -111,4 +119,29 @@ body {
 
 .c8{
   color: gray;
+}
+
+.flags {
+  padding: 8px;
+  margin: 8px 0px;
+  /* width: 100%; */
+  background-color: #dddddd;
+}
+
+.won {
+  color: green;
+  background-color: #c7ffc7;
+  padding: 8px 0px;
+  margin: 8px 0px;
+  width: 100%;
+  text-align: center;
+}
+
+.over {
+  color: red;
+  background-color: #ffc7c7;
+  padding: 8px 0px;
+  margin: 8px 0px;
+  width: 100%;
+  text-align: center;
 }

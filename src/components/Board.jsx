@@ -9,7 +9,8 @@ class Board extends Component {
         this.state = {
             board: this.createBoard(),
             flags: 0,
-            correct: 0
+            correct: 0,
+            game: 0
         }
     }
 
@@ -127,7 +128,8 @@ class Board extends Component {
 
         this.setState({
             board: board,
-            flags: 0
+            flags: 0,
+            game: -100
         })
     }
 
@@ -253,12 +255,48 @@ class Board extends Component {
 
     }
 
+    displayMessage = () => {
+        if (this.state.game > 0)
+            return <p className="won">You Won!!!</p>
+        else if (this.state.game < 0)
+            return <p className="over">Game Over!</p>
+        else
+            return null
+    }
+
+    checkWin = () => {
+        let board = this.state.board;
+        // let mineVsReveal = false;
+        // let nonMines = 0;
+        let flaggedMines = 0;
+        board.forEach(row => {
+            row.forEach(obj => {
+                if (obj.value > 90 && obj.flag === true) {
+                    flaggedMines++;
+                }
+            })
+        })
+
+        if (flaggedMines === 10) {
+            board.forEach(row => {
+                row.forEach(obj => {
+                    obj.reveal = true;
+                })
+            })
+
+            this.setState({
+                board: board,
+                game: 100
+            })
+        }
+    }
+
     render() {
         return (
-            <div className="board">
+            <div className="board" onClick={ this.checkWin }>
+                <p className="flags">Flags: <span className="flag-count">{ this.state.flags }</span></p>
                 { this.displayBoard(this.state.board) }
-                <br />
-                <p>Flags: { this.state.flags }</p>
+                { this.displayMessage() }
             </div>
         );
     }

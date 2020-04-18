@@ -5,11 +5,11 @@ class Game extends Component {
     state = {}
     render() {
         return (
-            <div>
+            <React.Fragment>
                 <h2>Minesweeper</h2>
                 <br />
-                <Board />
-            </div>
+                <Board className="board" />
+            </React.Fragment>
         );
     }
 }
