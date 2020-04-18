@@ -3,25 +3,27 @@
   /* RESETS */
   margin: 0;
   padding: 0;
-  /* box-sizing: border-box; */
 }
 
 body {
+  color: white;
   display: flex;
-  flex-direction: row;
-  justify-content: center;
+  flex-direction: column;
+  justify-content: top;
+  justify-self: start;
   align-items: center;
-  /* width: 100%; */
+  width: 90%;
+  margin: 5%;
+  min-height: 60vh;
+  background-color: #121212;
 }
 
 h2{
-  margin: 16px 0px;
+  margin: 16px 0px 8px 0px;
 }
 
 .board {
   user-select: none;
-  /* width: 100%; */
-  /* margin: 0% 5%; */
 }
 
 .row {
@@ -122,9 +124,9 @@ h2{
 }
 
 .flags {
+  color: black;
   padding: 8px;
   margin: 8px 0px;
-  /* width: 100%; */
   background-color: #dddddd;
 }
 
@@ -144,4 +146,25 @@ h2{
   margin: 8px 0px;
   width: 100%;
   text-align: center;
+}
+
+/* RESPONSIVEness */
+
+@media screen and (max-width: 480px) {
+  .tile, .tile_clicked {
+    border-width: 1.5px;
+    height: 32px;
+    width: 32px;
+  }
+
+  .flag, .mine {
+    height: 24px;
+    width: 24px;
+    padding:4px;
+  }
+
+  .value{
+    font-size: 18px;
+    padding: 7px;
+  }
 }

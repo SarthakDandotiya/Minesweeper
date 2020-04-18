@@ -257,9 +257,19 @@ class Board extends Component {
 
     displayMessage = () => {
         if (this.state.game > 0)
-            return <p className="won">You Won!!!</p>
+            return (
+                <div>
+                    <p className="won">You Won!!!</p>
+                    <p style={ { textAlign: "center", color: "#999999" } }>Refresh to play again</p>
+                </div>
+            )
         else if (this.state.game < 0)
-            return <p className="over">Game Over!</p>
+            return (
+                <div>
+                    <p className="over">Game Over!</p>
+                    <p style={ { textAlign: "center", color: "#999999" } }>Refresh to play again</p>
+                </div>
+            )
         else
             return null
     }
