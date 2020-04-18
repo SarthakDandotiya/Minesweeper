@@ -13,7 +13,7 @@ class Tile extends Component {
     handleClick = () => {
         if (this.state.held === false && this.props.reveal === false)
             this.setState({ clicked: true })
-        if (this.props.value === 0)
+        if (this.props.value === 0 && this.state.held === false && this.props.flag === false)
             this.props.usn(this.props.i, this.props.j);
         if (this.state.held === false && this.props.reveal === false && this.props.value > 90)
             this.props.revealAll()
@@ -22,10 +22,13 @@ class Tile extends Component {
     handleHold = () => {
         if (this.state.clicked === false && this.props.reveal === false) {
             // this.setState({ held: !this.state.held })
-            if (this.state.held === true && this.props.flagCount > 0) {
+            // if (this.state.held === true && this.props.flagCount > 0)
+            if (this.props.flag === true && this.props.flagCount > 0) {
                 this.setState({ held: false })
                 this.props.dF(this.props.i, this.props.j)
-            } else if (this.state.held === false && this.props.flagCount < 10) {
+            }
+            // else if (this.state.held === false && this.props.flagCount < 10)
+            else if (this.props.flag === false && this.props.flagCount < 10) {
                 this.setState({ held: true })
                 this.props.iF(this.props.i, this.props.j)
             }

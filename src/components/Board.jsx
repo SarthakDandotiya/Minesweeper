@@ -150,7 +150,7 @@ class Board extends Component {
             const bC = ((i + 1) >= 0) && ((j) >= 0) && ((i + 1) <= 8) && ((j) <= 8)
             const bR = ((i + 1) >= 0) && ((j + 1) >= 0) && ((i + 1) <= 8) && ((j + 1) <= 8)
 
-            if (tL && board[i - 1][j - 1].reveal === false) {
+            if (tL && board[i - 1][j - 1].reveal === false && board[i - 1][j - 1].flag === false) {
                 board[i - 1][j - 1].reveal = true;
                 if (board[i - 1][j - 1].flag === true) {
                     flags--;
@@ -158,7 +158,7 @@ class Board extends Component {
                 }
                 this.updateSurroundingNull(i - 1, j - 1)
             }
-            if (tC && board[i - 1][j].reveal === false) {
+            if (tC && board[i - 1][j].reveal === false && board[i - 1][j].flag === false) {
                 board[i - 1][j].reveal = true;
                 if (board[i - 1][j].flag === true) {
                     flags--;
@@ -166,7 +166,7 @@ class Board extends Component {
                 }
                 this.updateSurroundingNull(i - 1, j)
             }
-            if (tR && board[i - 1][j + 1].reveal === false) {
+            if (tR && board[i - 1][j + 1].reveal === false && board[i - 1][j + 1].flag === false) {
                 board[i - 1][j + 1].reveal = true;
                 if (board[i - 1][j + 1].flag === true) {
                     flags--;
@@ -174,7 +174,7 @@ class Board extends Component {
                 }
                 this.updateSurroundingNull(i - 1, j + 1)
             }
-            if (L && board[i][j - 1].reveal === false) {
+            if (L && board[i][j - 1].reveal === false && board[i][j - 1].flag === false) {
                 board[i][j - 1].reveal = true;
                 if (board[i][j - 1].flag === true) {
                     flags--;
@@ -182,7 +182,7 @@ class Board extends Component {
                 }
                 this.updateSurroundingNull(i, j - 1)
             }
-            if (R && board[i][j + 1].reveal === false) {
+            if (R && board[i][j + 1].reveal === false && board[i][j + 1].flag === false) {
                 board[i][j + 1].reveal = true;
                 if (board[i][j + 1].flag === true) {
                     flags--;
@@ -190,7 +190,7 @@ class Board extends Component {
                 }
                 this.updateSurroundingNull(i, j + 1)
             }
-            if (bL && board[i + 1][j - 1].reveal === false) {
+            if (bL && board[i + 1][j - 1].reveal === false && board[i + 1][j - 1].flag === false) {
                 board[i + 1][j - 1].reveal = true;
                 if (board[i + 1][j - 1].flag === true) {
                     flags--;
@@ -198,7 +198,7 @@ class Board extends Component {
                 }
                 this.updateSurroundingNull(i + 1, j - 1)
             }
-            if (bC && board[i + 1][j].reveal === false) {
+            if (bC && board[i + 1][j].reveal === false && board[i + 1][j].flag === false) {
                 board[i + 1][j].reveal = true;
                 if (board[i + 1][j].flag === true) {
                     flags--;
@@ -206,7 +206,7 @@ class Board extends Component {
                 }
                 this.updateSurroundingNull(i + 1, j)
             }
-            if (bR && board[i + 1][j + 1].reveal === false) {
+            if (bR && board[i + 1][j + 1].reveal === false && board[i + 1][j + 1].flag === false) {
                 board[i + 1][j + 1].reveal = true;
                 if (board[i + 1][j + 1].flag === true) {
                     flags--;
@@ -235,8 +235,9 @@ class Board extends Component {
                         usn={ this.updateSurroundingNull }
                         iF={ this.incrementFlags }
                         dF={ this.deccrementFlags }
+                        flag={ obj.flag }
                         flagCount={ this.state.flags }
-                        flagable={ (this.state.flags >= 0 && this.state.flags <= 10) ? true : false }
+                        // flagable={ (this.state.flags >= 0 && this.state.flags <= 10) ? true : false }
                         reveal={ obj.reveal }
                         revealAll={ this.revealAll }
                     />

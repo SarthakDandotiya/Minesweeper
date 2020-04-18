@@ -7,9 +7,6 @@ class Game extends Component {
         return (
             <div>
                 <h2>Minesweeper</h2>
-                <section>
-                    Start, Timer and Points here
-                </section>
                 <br />
                 <Board />
             </div>
